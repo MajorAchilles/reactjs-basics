@@ -1,37 +1,9 @@
-// import React from "react";
-// import {render} from "react-dom";
-
-// import { User } from './components/User';
-// import { Main } from './components/Main';
-
-// class App extends React.Component {
-//     constructor() {
-//         super();
-//         this.state = {
-//             username: "Max"
-//         };
-//     }
-
-//     changeUsername(newName) {
-//         this.setState({
-//             username: newName
-//         });
-//     }
-
-//     render() {
-//         return (
-//             <div className="container">
-//                 <Main changeUsername={newName => this.changeUsername(newName)}/>
-//                 <User username={this.state.username}/>
-//             </div>
-//         );
-//     }
-// }
-
-// render(<App />, window.document.getElementById('app'));
-
+import {render} from "react-dom";
+import React from "react";
 import { createStore, combineReducers, applyMiddleware } from "redux";
 import { createLogger } from "redux-logger";
+import { Provider } from "react-redux";
+import App from "./components/App"
 
 const mathReducer = (state = {
     result: 0,
@@ -87,8 +59,8 @@ const myLogger = store => next => action => {
 
 const store = createStore(
     combineReducers({
-        mathState: mathReducer,
-        userState: userReducer
+        math: mathReducer,
+        user: userReducer
     }),
     {},
     applyMiddleware(myLogger, createLogger())
@@ -122,3 +94,10 @@ store.dispatch({
     type: "SET_NAME",
     payload: "Amlan"
 });
+
+render(
+    <Provider store={store}>
+        <App/>
+    </Provider>,
+    window.document.getElementById('app')
+);
