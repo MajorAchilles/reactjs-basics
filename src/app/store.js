@@ -1,18 +1,14 @@
 import { createStore, combineReducers, applyMiddleware } from "redux";
 import { createLogger } from "redux-logger";
+import thunk from "redux-thunk";
+import promiseMiddleware from "redux-promise-middleware";
 import math from "./reducers/mathReducer"
 import user from "./reducers/userReducer"
-
-const myLogger = store => next => action => {
-    // console.log("Dispatching action", action);
-    const result =  next(action);
-    return result;
-};
 
 export default createStore(
     combineReducers({ math, user }),
     {},
-    applyMiddleware(myLogger, createLogger())
+    applyMiddleware(createLogger(), thunk, promiseMiddleware)
 );
 
 // store.subscribe(() => {
